@@ -56,5 +56,5 @@ combineTool.py -M MultiDimFit -d output/workspace.root --setParameters r_sig1=1,
 ```
 
 <p align="center" vertical-align: middle>
-  <img src="../doc/hists.png" alt="Toy analysis" width="450" hspace="20"/>
+  <img src="doc/hists.png" alt="Toy analysis" width="450" hspace="20"/>
 </p>
