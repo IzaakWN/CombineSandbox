@@ -159,8 +159,9 @@ def createdatacard(finname="hists.root",outdir="output",verb=0):
   if verb>=1:
     harvester.PrintObs().PrintProcs().PrintSysts()
   ###harvester.AddDatacardLineAtEnd("* autoMCStats %d 0 1"%(threshold)) # [channel] autoMCStats [threshold] [include-signal = 0] [hist-mode = 1]
-  dcname = joinpath(outdir,"datacard.txt")
-  writer = CardWriter("$TAG/datacard.txt","$TAG/datacard.input.root") #"$ANALYSIS_$CHANNEL_$BINID_$ERA-$MASS.txt"
+  ###dcname = joinpath(outdir,"datacard.txt")
+  dcname = "datacard.txt"
+  writer = CardWriter(f"$TAG/{dcname}","$TAG/datacard.input.root") #"$ANALYSIS_$CHANNEL_$BINID_$ERA-$MASS.txt"
   writer.CreateDirectories(True).SetVerbosity(verb)
   writer.WriteCards(outdir,harvester)
   ###writer.SetWildcardMasses([ ])
@@ -173,23 +174,26 @@ def createdatacard(finname="hists.root",outdir="output",verb=0):
 def createworkspace(dcname,wsname,outdir="",verb=0):
   """Make workspace with text2workspace.py."""
   print(f">>> createworkspace")
-  wsname = joinpath(outdir,wsname)
-  cmd = f"text2workspace.py -m 125 {dcname} -o {wsname} "+\
+  #wsname = joinpath(outdir,wsname)
+  cmd = f"cd {outdir} && "+\
+        f"text2workspace.py -m 125 {dcname} -o {wsname} "+\
          "-P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel "+\
-         "--PO verbose --PO json=physOpts.json"
+         "--PO verbose --PO json=../physOpts.json"
   print(f">>> createworkspace: Executing {cmd!r}...")
   os.system(cmd)
   return wsname
   
 
-def mdfit(wsname,verb=0):
+def mdfit(wsname,mass=125,outdir="",verb=0):
   """Make workspace with text2workspace.py."""
   print(f">>> mdfit")
-  cmd = f"combineTool.py -M MultiDimFit -d {wsname} "+\
-        " --setParameters r_sig1=1,r_sig2=1,r_sig3=1 --redefineSignalPOIs r_sig1,r_sig2,r_sig3"
+  fname = f"higgsCombine.Test.MultiDimFit.mH{mass}.root"
+  cmd = f"cd {outdir} && "+\
+        f"combineTool.py -M MultiDimFit -d {wsname} -m {mass} "+\
+         " --setParameters r_sig1=1,r_sig2=1,r_sig3=1 --redefineSignalPOIs r_sig1,r_sig2,r_sig3"
   print(f">>> createworkspace: Executing {cmd!r}...")
   os.system(cmd)
-  return wsname
+  return fname
   
 
 def main(args):
@@ -206,7 +210,7 @@ def main(args):
   canvas.Close()
   dcname = createdatacard(fname,outdir=outdir,verb=args.verbosity)
   wsname = createworkspace(dcname,"workspace.root",outdir=outdir,verb=args.verbosity)
-  mdfit(wsname,verb=args.verbosity)
+  mdfit(wsname,outdir=outdir,verb=args.verbosity)
   
 
 if __name__ == "__main__":
