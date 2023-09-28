@@ -23,7 +23,7 @@ def ensuredir(dname,verb=0):
 
 def joinpath(path,fname):
   """Join parent directory and filename."""
-  return os.path.join(path,fname) if path else fname
+  return os.path.join(ensuredir(path),fname) if path else fname
   
 
 def createhists_sig(nbins,xmin,xmax,nevts=1000,verb=0):
@@ -195,8 +195,8 @@ def mdfit(wsname,verb=0):
 def main(args):
   nevts  = 5e3
   nbins, xmin, xmax = 50, 0, 100
-  indir  = "input"
-  outdir = "output"
+  indir  = ensuredir("input")
+  outdir = ensuredir("output")
   hists  = [ ]
   hists += createhists_sig(nbins,xmin,xmax,nevts=0.4*nevts,verb=args.verbosity)
   hists += createhists_bkg(nbins,xmin,xmax,nevts=0.6*nevts,verb=args.verbosity)
