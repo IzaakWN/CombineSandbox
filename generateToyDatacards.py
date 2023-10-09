@@ -215,7 +215,7 @@ def main(args):
 
 if __name__ == "__main__":
   from argparse import ArgumentParser
-  description = """Simple plotting script for pico analysis tuples"""
+  description = """Generate toy analysis for testing combine."""
   parser = ArgumentParser(prog="plot",description=description,epilog="Good luck!")
   parser.add_argument('-v', '--verbose', dest='verbosity', type=int, nargs='?', const=1, default=0, action='store',
                                          help="set verbosity" )

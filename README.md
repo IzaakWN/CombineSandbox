@@ -20,6 +20,7 @@ git clone git@github.com:cms-analysis/HiggsAnalysis-CombinedLimit.git HiggsAnaly
 _or_, get my development, e.g.
 ```
 git clone git@github.com:IzaakWN/HiggsAnalysis-CombinedLimit.git HiggsAnalysis/CombinedLimit
+cd HiggsAnalysis/CombinedLimit
 git checkout addPOsFromJSON
 ```
 Install `CombineHarvester`:
@@ -29,10 +30,12 @@ bash <(curl -s https://raw.githubusercontent.com/cms-analysis/CombineHarvester/m
 ```
 Install this repository:
 ```
+cd $CMSSW_BASE/src/
 git clone git@github.com:IzaakWN/CombineSandbox.git HiggsAnalysis/CombineSandbox
 ```
 Finally, compile
 ```
+cd $CMSSW_BASE/src/
 scramv1 b clean; scramv1 b -j10
 ```
 
